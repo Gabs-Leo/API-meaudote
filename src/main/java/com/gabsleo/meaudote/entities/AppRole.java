@@ -1,7 +1,6 @@
 package com.gabsleo.meaudote.entities;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +12,6 @@ public class AppRole {
     private UUID id;
     private String name;
 
-    @ManyToMany(mappedBy = "")
+    @ManyToMany(mappedBy = "appRoles")
     private List<AppUser> appUsers = new ArrayList<>();
 }
