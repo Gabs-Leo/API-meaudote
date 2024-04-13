@@ -42,6 +42,7 @@ public class AppUser implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DonationPage> donationPages = new ArrayList<>();
 
+    public AppUser() {}
     public AppUser(String cpf, String name, String password, String email, Date createdAt, String phone, String profilePicture, String bannerPicture, Boolean isNGO, String state, String city) {
         this.cpf = cpf;
         this.name = name;
@@ -102,16 +103,18 @@ public class AppUser implements UserDetails {
         return password;
     }
 
-    public void setPassword(String password) {
+    public AppUser setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public AppUser setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public Date getCreatedAt() {
@@ -180,5 +183,13 @@ public class AppUser implements UserDetails {
 
     public List<DonationPage> getDonationPages() {
         return donationPages;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<AppRole> getAppRoles() {
+        return appRoles;
     }
 }

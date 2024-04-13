@@ -15,4 +15,9 @@ public class TestingController {
     public ResponseEntity<Response<String>> helloWorld(){
         return ResponseEntity.ok(new Response<>("Hello World!", new ArrayList<>()));
     }
+
+    @GetMapping("/t2")
+    public ResponseEntity<Response<String>> xdd(){
+        return ResponseEntity.ok(new Response<>("xdd", new ArrayList<>()));
+    }
 }
