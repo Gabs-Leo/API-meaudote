@@ -1,0 +1,22 @@
+env:
+  JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
+  SECRET_KEY: ${SECRET_KEY}
+
+  ROOT_NAME: ${ROOT_NAME}
+  ROOT_PASSWORD: ${ROOT_PASSWORD}
+  ROOT_CPF: ${ROOT_CPF}
+  ROOT_EMAIL: ${ROOT_EMAIL}
+  ROOT_PHONE: ${ROOT_PHONE}
+spring:
+  application:
+    name: meaudote
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
