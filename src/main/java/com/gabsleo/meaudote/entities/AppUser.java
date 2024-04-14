@@ -2,6 +2,7 @@ package com.gabsleo.meaudote.entities;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class AppUser implements UserDetails {
     private String state;
     private String city;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(name = "appuser_cpf"),
@@ -96,7 +97,11 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> authors = new ArrayList<>();
+        this.getAppRoles().forEach(i ->
+                authors.add(new SimpleGrantedAuthority(i.getName()))
+        );
+        return authors;
     }
     @Override
     public String getPassword() {

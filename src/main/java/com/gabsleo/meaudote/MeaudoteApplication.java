@@ -1,6 +1,8 @@
 package com.gabsleo.meaudote;
 
+import com.gabsleo.meaudote.entities.AppRole;
 import com.gabsleo.meaudote.entities.AppUser;
+import com.gabsleo.meaudote.services.AppRoleService;
 import com.gabsleo.meaudote.services.AppUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -28,8 +30,11 @@ public class MeaudoteApplication {
 	}
 
 	@Bean
-	CommandLineRunner startup(AppUserService appUserService){
+	CommandLineRunner startup(AppUserService appUserService, AppRoleService appRoleService){
 		return args -> {
+
+			appUserService.attachRole(appUserService.findByEmail("gabriel@gmail.com"), appRoleService.save(new AppRole("ADMIN")));
+			/*
 			appUserService.register(new AppUser(
 					ROOT_CPF,
 					ROOT_NAME,
@@ -42,7 +47,7 @@ public class MeaudoteApplication {
 					false,
 					"Sao Paulo",
 					"Franca"
-			));
+			));*/
 		};
 	}
 }

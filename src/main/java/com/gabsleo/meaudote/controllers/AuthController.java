@@ -3,19 +3,15 @@ package com.gabsleo.meaudote.controllers;
 import com.gabsleo.meaudote.dtos.JwtTokenDto;
 import com.gabsleo.meaudote.dtos.LoginDto;
 import com.gabsleo.meaudote.dtos.RegisterDto;
-import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+import com.gabsleo.meaudote.exceptions.FieldInUseException;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.services.AuthenticationService;
 import com.gabsleo.meaudote.utils.Response;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -38,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) {
+    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) throws FieldInUseException {
         Response<String> response = new Response<>();
         response.setData(authenticationService.register(request).token());
         return ResponseEntity.ok(response);

@@ -6,6 +6,7 @@ import com.gabsleo.meaudote.dtos.RegisterDto;
 import com.gabsleo.meaudote.entities.AppRole;
 import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+import com.gabsleo.meaudote.exceptions.FieldInUseException;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public JwtTokenDto register(RegisterDto request) {
+    public JwtTokenDto register(RegisterDto request) throws FieldInUseException {
         AppUser user = new AppUser();
         BeanUtils.copyProperties(request, user);
         appUserService.register(user);
@@ -51,8 +52,5 @@ public class AuthenticationService {
         return new JwtTokenDto(token);
     }
 
-    public void attachRole(AppUser appUser, AppRole appRole){
-        appUser.getAppRoles().add(appRole);
-        appUserService.save(appUser);
-    }
+
 }

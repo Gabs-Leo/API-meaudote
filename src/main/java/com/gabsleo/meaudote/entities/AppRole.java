@@ -14,4 +14,21 @@ public class AppRole {
 
     @ManyToMany(mappedBy = "appRoles")
     private List<AppUser> appUsers = new ArrayList<>();
+
+    public AppRole(){}
+    public AppRole(String name) {
+        this.name = name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<AppUser> getAppUsers() {
+        return appUsers;
+    }
 }
