@@ -1,6 +1,7 @@
 package com.gabsleo.meaudote.configuration;
 
 import com.gabsleo.meaudote.security.JwtAuthenticationFilter;
+import com.gabsleo.meaudote.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +40,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
-                        "/api/v1/auth/**",
-                        "/v3/api-docs/**", "/swagger-ui/**",
-                        "/api/v1/testing", "/api/v1/testing/**"
+                            "/api/v1/auth/**",
+                            "/v3/api-docs/**", "/swagger-ui/**",
+                            "/api/v1/testing", "/api/v1/testing/**",
+                            "/api/v1/pets/**"
                     ).permitAll()
                     .requestMatchers("/api/v1/admin").hasAnyAuthority("ADMIN")
                     .requestMatchers("/api/v1/users/current").hasAnyAuthority("ADMIN", "USER")

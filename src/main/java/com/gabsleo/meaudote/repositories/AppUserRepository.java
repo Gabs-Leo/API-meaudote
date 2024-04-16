@@ -1,7 +1,7 @@
 package com.gabsleo.meaudote.repositories;
 
 import com.gabsleo.meaudote.entities.AppUser;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

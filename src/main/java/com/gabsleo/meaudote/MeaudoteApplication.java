@@ -32,8 +32,8 @@ public class MeaudoteApplication {
 	@Bean
 	CommandLineRunner startup(AppUserService appUserService, AppRoleService appRoleService){
 		return args -> {
-
-			appUserService.attachRole(appUserService.findByEmail("gabriel@gmail.com"), appRoleService.save(new AppRole("ADMIN")));
+			//appRoleService.save(new AppRole("USER"));
+			//appUserService.attachRole(appUserService.findByEmail("gabriel@gmail.com"), appRoleService.save(new AppRole("ADMIN")));
 			/*
 			appUserService.register(new AppUser(
 					ROOT_CPF,

@@ -3,11 +3,9 @@ package com.gabsleo.meaudote.services;
 import com.gabsleo.meaudote.dtos.JwtTokenDto;
 import com.gabsleo.meaudote.dtos.LoginDto;
 import com.gabsleo.meaudote.dtos.RegisterDto;
-import com.gabsleo.meaudote.entities.AppRole;
 import com.gabsleo.meaudote.entities.AppUser;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
 import com.gabsleo.meaudote.exceptions.FieldInUseException;
-import jakarta.validation.Valid;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +40,7 @@ public class AuthenticationService {
         return new JwtTokenDto(token);
     }
 
-    public JwtTokenDto authenticate(LoginDto request) throws AppUserNotFoundException, AuthenticationException {
+    public JwtTokenDto authenticate(LoginDto request) throws NotFoundException, AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.email(),
                 request.password()

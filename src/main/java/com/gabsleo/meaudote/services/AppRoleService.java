@@ -17,4 +17,7 @@ public class AppRoleService {
     public AppRole save(AppRole appRole){
         return appRoleRepository.save(appRole);
     }
+    public AppRole findByName(String name) {
+        return appRoleRepository.findByName(name).orElseThrow();
+    }
 }

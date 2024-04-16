@@ -2,11 +2,10 @@ package com.gabsleo.meaudote.controllers;
 
 import com.gabsleo.meaudote.dtos.AppUserDto;
 import com.gabsleo.meaudote.entities.AppUser;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
 import com.gabsleo.meaudote.exceptions.AppUserNotLoggedException;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.utils.Response;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +26,7 @@ public class AppUserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<Response<AppUserDto>> getCurrent(Principal principal) throws AppUserNotLoggedException, AppUserNotFoundException {
-        if(principal == null){
-            throw new AppUserNotLoggedException();
-        }
+    public ResponseEntity<Response<AppUserDto>> getCurrent(Principal principal) throws AppUserNotLoggedException, NotFoundException {
         Response<AppUserDto> response = new Response<>();
         AppUser appUser = appUserService.findByEmail(principal.getName());
         AppUserDto userDto = new AppUserDto(

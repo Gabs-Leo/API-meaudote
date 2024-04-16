@@ -5,7 +5,7 @@ import com.gabsleo.meaudote.dtos.UpdateAppUserDto;
 import com.gabsleo.meaudote.entities.AppRole;
 import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.enums.UniqueField;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.exceptions.FieldInUseException;
 import com.gabsleo.meaudote.repositories.AppUserRepository;
 import org.springframework.beans.BeanUtils;
@@ -20,16 +20,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AppRoleService appRoleService;
     @Autowired
-    public AppUserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public AppUserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, AppRoleService appRoleService) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.appRoleService = appRoleService;
     }
     public AppUser save(AppUser appUser){
         return appUserRepository.save(appUser);
@@ -44,7 +45,9 @@ public class AppUserService implements UserDetailsService {
         }
 
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        return appUserRepository.save(appUser);
+        AppUser user = appUserRepository.save(appUser);
+        this.attachRole(user, appRoleService.findByName("USER"));
+        return user;
     }
     public AppUser udpate(AppUser appUser, UpdateAppUserDto appUserDto){
         BeanUtils.copyProperties(appUserDto, appUser);
@@ -67,11 +70,11 @@ public class AppUserService implements UserDetailsService {
         return this.save(appUser);
     }
 
-    public AppUser findByCpf(String cpf) throws AppUserNotFoundException {
-        return appUserRepository.findByCpf(cpf).orElseThrow(AppUserNotFoundException::new);
+    public AppUser findByCpf(String cpf) throws NotFoundException {
+        return appUserRepository.findByCpf(cpf).orElseThrow(NotFoundException::new);
     }
-    public AppUser findByEmail(String email) throws AppUserNotFoundException {
-        return appUserRepository.findByEmail(email).orElseThrow(AppUserNotFoundException::new);
+    public AppUser findByEmail(String email) throws NotFoundException {
+        return appUserRepository.findByEmail(email).orElseThrow(NotFoundException::new);
     }
 
     @Override
