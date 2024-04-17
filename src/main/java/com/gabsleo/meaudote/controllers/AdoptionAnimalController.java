@@ -7,6 +7,7 @@ import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.services.AdoptionAnimalService;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.utils.Response;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,15 @@ public class AdoptionAnimalController {
     public AdoptionAnimalController(AdoptionAnimalService adoptionAnimalService, AppUserService appUserService) {
         this.adoptionAnimalService = adoptionAnimalService;
         this.appUserService = appUserService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response<AdoptionAnimalDto>> findById(@PathParam("id") UUID id) {
+        Response<AdoptionAnimalDto> response = new Response<>();
+        response.setData(
+                adoptionAnimalService.convertToDto(adoptionAnimalService.findById(id))
+        );
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

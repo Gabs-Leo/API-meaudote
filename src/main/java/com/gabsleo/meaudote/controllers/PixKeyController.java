@@ -30,11 +30,11 @@ public class PixKeyController {
         this.appUserService = appUserService;
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<Response<List<PixKeyDto>>> listAllFromUser(@PathParam("username") String username) throws NotFoundException, AppUserNotLoggedException {
-        Response<List<PixKeyDto>> response = new Response<>();
+    @GetMapping("/{id}")
+    public ResponseEntity<Response<PixKeyDto>> getFromId(@PathParam("id") UUID id) throws NotFoundException, AppUserNotLoggedException {
+        Response<PixKeyDto> response = new Response<>();
         response.setData(
-            pixKeyService.findByAppUser(appUserService.findByName(username)).stream().map(pixKeyService::convertToDto).toList()
+                pixKeyService.convertToDto(pixKeyService.findById(id))
         );
         return ResponseEntity.ok(response);
     }
