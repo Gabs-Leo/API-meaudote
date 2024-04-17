@@ -1,6 +1,8 @@
 package com.gabsleo.meaudote.services;
 
 import com.gabsleo.meaudote.entities.AppRole;
+import com.gabsleo.meaudote.enums.Model;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.repositories.AppRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class AppRoleService {
     public AppRole save(AppRole appRole){
         return appRoleRepository.save(appRole);
     }
-    public AppRole findByName(String name) {
-        return appRoleRepository.findByName(name).orElseThrow();
+    public AppRole findByName(String name) throws NotFoundException {
+        return appRoleRepository.findByName(name).orElseThrow(() -> new NotFoundException(Model.APP_ROLE));
     }
 }

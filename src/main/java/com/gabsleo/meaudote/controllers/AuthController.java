@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) throws FieldInUseException {
+    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) throws FieldInUseException, NotFoundException {
         Response<String> response = new Response<>();
         response.setData(authenticationService.register(request).token());
         return ResponseEntity.ok(response);

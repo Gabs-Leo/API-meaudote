@@ -32,22 +32,34 @@ public class MeaudoteApplication {
 	@Bean
 	CommandLineRunner startup(AppUserService appUserService, AppRoleService appRoleService){
 		return args -> {
-			//appRoleService.save(new AppRole("USER"));
-			//appUserService.attachRole(appUserService.findByEmail("gabriel@gmail.com"), appRoleService.save(new AppRole("ADMIN")));
-			/*
-			appUserService.register(new AppUser(
-					ROOT_CPF,
-					ROOT_NAME,
-					ROOT_PASSWORD,
-					ROOT_EMAIL,
-					new Date(),
-					ROOT_PHONE,
-					"pfp.png",
-					"banner.png",
-					false,
-					"Sao Paulo",
-					"Franca"
-			));*/
+			try{
+				appRoleService.findByName("USER");
+			} catch (Exception e){
+				appRoleService.save(new AppRole("USER"));
+			}
+			try{
+				appRoleService.findByName("ADMIN");
+			} catch (Exception e){
+				appRoleService.save(new AppRole("ADMIN"));
+			}
+			try{
+				appUserService.findByEmail(ROOT_EMAIL);
+			} catch (Exception e){
+				appUserService.register(new AppUser(
+						ROOT_CPF,
+						ROOT_NAME,
+						ROOT_PASSWORD,
+						ROOT_EMAIL,
+						new Date(),
+						ROOT_PHONE,
+						"pfp.png",
+						"banner.png",
+						false,
+						"Sao Paulo",
+						"Franca"
+				));
+				appUserService.attachRole(appUserService.findByEmail(ROOT_EMAIL), appRoleService.findByName("ADMIN"));
+			}
 		};
 	}
 }

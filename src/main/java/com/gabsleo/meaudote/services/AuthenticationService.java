@@ -31,7 +31,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public JwtTokenDto register(RegisterDto request) throws FieldInUseException {
+    public JwtTokenDto register(RegisterDto request) throws FieldInUseException, NotFoundException {
         AppUser user = new AppUser();
         BeanUtils.copyProperties(request, user);
         appUserService.register(user);
