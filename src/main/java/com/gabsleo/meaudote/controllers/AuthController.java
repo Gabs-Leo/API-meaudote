@@ -3,8 +3,8 @@ package com.gabsleo.meaudote.controllers;
 import com.gabsleo.meaudote.dtos.JwtTokenDto;
 import com.gabsleo.meaudote.dtos.LoginDto;
 import com.gabsleo.meaudote.dtos.RegisterDto;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
 import com.gabsleo.meaudote.exceptions.FieldInUseException;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.services.AuthenticationService;
 import com.gabsleo.meaudote.utils.Response;
@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response<String>> login(@RequestBody LoginDto request) throws AppUserNotFoundException {
+    public ResponseEntity<Response<String>> login(@RequestBody LoginDto request) throws NotFoundException {
         Response<String> response = new Response();
         JwtTokenDto authentication = authenticationService.authenticate(request);
         response.setData(authentication.token());
@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) throws FieldInUseException {
+    public ResponseEntity<Response<String>> register(@Valid @RequestBody RegisterDto request) throws FieldInUseException, NotFoundException {
         Response<String> response = new Response<>();
         response.setData(authenticationService.register(request).token());
         return ResponseEntity.ok(response);

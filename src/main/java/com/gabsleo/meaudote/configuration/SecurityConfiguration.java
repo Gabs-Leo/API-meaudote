@@ -4,6 +4,7 @@ import com.gabsleo.meaudote.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -39,12 +40,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
-                        "/api/v1/auth/**",
-                        "/v3/api-docs/**", "/swagger-ui/**",
-                        "/api/v1/testing", "/api/v1/testing/**"
+                            "/api/v1/auth/**",
+                            "/v3/api-docs/**", "/swagger-ui/**",
+                            "/api/v1/testing", "/api/v1/testing/**"
                     ).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/pixkeys/**", "/api/v1/pets/**", "/api/v1/users/**").permitAll()
                     .requestMatchers("/api/v1/admin").hasAnyAuthority("ADMIN")
-                    .requestMatchers("/api/v1/users/current").hasAnyAuthority("ADMIN", "USER")
+                    .requestMatchers("/api/v1/users/current", "/api/v1/pixkeys/**", "/api/v1/pets/**").hasAnyAuthority("ADMIN", "USER")
                     .anyRequest().authenticated()
                 )
                 //.exceptionHandling().accessDeniedHandler(accessDeniedHandler)

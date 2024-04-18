@@ -1,16 +1,13 @@
 package com.gabsleo.meaudote.controllers;
 
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.utils.Response;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -20,7 +17,7 @@ public class ExceptionControllerAdvice {
         response.getErrors().add(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
-    @ExceptionHandler({AppUserNotFoundException.class})
+    @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Response<Object>> handleNotFoundExceptions(final Exception exception) {
         final Response<Object> response = new Response<>();
         response.getErrors().add(exception.getMessage());

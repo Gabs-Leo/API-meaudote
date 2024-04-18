@@ -1,7 +1,7 @@
 package com.gabsleo.meaudote.configuration;
 
 import com.gabsleo.meaudote.entities.AppUser;
-import com.gabsleo.meaudote.exceptions.AppUserNotFoundException;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() throws AppUserNotFoundException {
+    public AuthenticationProvider authenticationProvider() throws NotFoundException {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());

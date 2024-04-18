@@ -35,13 +35,13 @@ public class AppUser implements UserDetails {
         joinColumns = @JoinColumn(name = "appuser_cpf"),
         inverseJoinColumns = @JoinColumn(name = "approle_id")
     )
-    private List<AppRole> appRoles = new ArrayList<>();
+    private final List<AppRole> appRoles = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PixKey> pixKeys = new ArrayList<>();
+    private final List<PixKey> pixKeys = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AdoptionAnimal> adoptionAnimals = new ArrayList<>();
+    private final List<AdoptionAnimal> adoptionAnimals = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DonationPage> donationPages = new ArrayList<>();
+    private final List<DonationPage> donationPages = new ArrayList<>();
 
     public AppUser() {}
     public AppUser(String cpf, String name, String password, String email, Date createdAt, String phone, String profilePicture, String bannerPicture, Boolean isNGO, String state, String city) {
