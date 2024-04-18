@@ -3,6 +3,7 @@ import com.gabsleo.meaudote.dtos.AppUserDto;
 import com.gabsleo.meaudote.dtos.EmailDto;
 import com.gabsleo.meaudote.dtos.NameDto;
 import com.gabsleo.meaudote.dtos.UpdateAppUserDto;
+import com.gabsleo.meaudote.dtos.admin.AdminAppUserDto;
 import com.gabsleo.meaudote.entities.AppRole;
 import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.enums.UniqueField;
@@ -124,6 +125,22 @@ public class AppUserService implements UserDetailsService {
                 appUser.getBannerPicture(),
                 appUser.getState(),
                 appUser.getCity()
+        );
+    }
+
+    public AdminAppUserDto convertToAdminDto(AppUser appUser){
+        return new AdminAppUserDto(
+            appUser.getCpf(),
+            appUser.getName(),
+            appUser.getEmail(),
+            appUser.getCreatedAt(),
+            appUser.getPhone(),
+            appUser.getProfilePicture(),
+            appUser.getBannerPicture(),
+            appUser.getNGO(),
+            appUser.getState(),
+            appUser.getCity(),
+            appUser.getAppRoles().stream().map(AppRole::getName).toList()
         );
     }
 }
