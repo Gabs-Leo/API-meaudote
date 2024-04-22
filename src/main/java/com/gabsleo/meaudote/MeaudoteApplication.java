@@ -28,7 +28,7 @@ public class MeaudoteApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MeaudoteApplication.class, args);
 	}
-
+/*
 	@Bean
 	CommandLineRunner startup(AppUserService appUserService, AppRoleService appRoleService){
 		return args -> {
@@ -61,5 +61,5 @@ public class MeaudoteApplication {
 				appUserService.attachRole(appUserService.findByEmail(ROOT_EMAIL), appRoleService.findByName("ADMIN"));
 			}
 		};
-	}
+	}*/
 }

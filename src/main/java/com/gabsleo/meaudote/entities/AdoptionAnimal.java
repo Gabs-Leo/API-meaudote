@@ -127,4 +127,5 @@ public class AdoptionAnimal {
         this.appUser = appUser;
         return this;
     }
+
 }
