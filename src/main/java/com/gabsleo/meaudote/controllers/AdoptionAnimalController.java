@@ -22,6 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/pets")
+@CrossOrigin("*")
 public class AdoptionAnimalController {
     private final AdoptionAnimalService adoptionAnimalService;
     private final AppUserService appUserService;

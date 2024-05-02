@@ -27,6 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/adm")
+@CrossOrigin("*")
 public class AdmController {
     private final AppUserService appUserService;
     private final AppRoleService appRoleService;

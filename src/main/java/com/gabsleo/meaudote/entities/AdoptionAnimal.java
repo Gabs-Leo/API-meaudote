@@ -83,8 +83,9 @@ public class AdoptionAnimal {
         return image;
     }
 
-    public void setImage(String image) {
+    public AdoptionAnimal setImage(String image) {
         this.image = image;
+        return this;
     }
 
     public String getCity() {
