@@ -1,3 +1,5 @@
+server:
+  port : ${APP_PORT}
 env:
   JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
   SECRET_KEY: ${SECRET_KEY}
