@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/pixkeys")
+@CrossOrigin("*")
 public class PixKeyController {
     private final PixKeyService pixKeyService;
     private final AppUserService appUserService;
