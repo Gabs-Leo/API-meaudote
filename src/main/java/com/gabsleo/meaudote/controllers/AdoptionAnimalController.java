@@ -1,7 +1,9 @@
 package com.gabsleo.meaudote.controllers;
 
 import com.gabsleo.meaudote.dtos.AdoptionAnimalDto;
+import com.gabsleo.meaudote.dtos.AppUserDto;
 import com.gabsleo.meaudote.entities.AdoptionAnimal;
+import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.exceptions.AppUserNotLoggedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.services.AdoptionAnimalService;
@@ -39,6 +41,13 @@ public class AdoptionAnimalController {
         response.setData(
                 adoptionAnimalService.convertToDto(adoptionAnimalService.findById(id))
         );
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/owner")
+    public ResponseEntity<Response<AppUserDto>> findOwner(@PathVariable("id") UUID id) throws NotFoundException {
+        Response<AppUserDto> response = new Response<>();
+        response.setData(appUserService.convertToDto(adoptionAnimalService.findById(id).getAppUser()));
         return ResponseEntity.ok(response);
     }
 
