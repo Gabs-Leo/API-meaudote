@@ -44,14 +44,7 @@ public class AppUserController {
     public ResponseEntity<Response<AppUserDto>> getCurrent(Principal principal) throws AppUserNotLoggedException, NotFoundException {
         Response<AppUserDto> response = new Response<>();
         AppUser appUser = appUserService.findByEmail(principal.getName());
-        AppUserDto userDto = new AppUserDto(
-            appUser.getName(),
-            appUser.getPhone(),
-            appUser.getProfilePicture(),
-            appUser.getBannerPicture(),
-            appUser.getState(),
-            appUser.getCity()
-        );
+        AppUserDto userDto = appUserService.convertToDto(appUser);
         response.setData(userDto);
         return ResponseEntity.ok(response);
     }
@@ -60,14 +53,7 @@ public class AppUserController {
     public ResponseEntity<Response<AppUserDto>> getUser(@PathParam("username") String username) throws NotFoundException {
         Response<AppUserDto> response = new Response<>();
         AppUser appUser = appUserService.findByName(username);
-        AppUserDto userDto = new AppUserDto(
-                appUser.getName(),
-                appUser.getPhone(),
-                appUser.getProfilePicture(),
-                appUser.getBannerPicture(),
-                appUser.getState(),
-                appUser.getCity()
-        );
+        AppUserDto userDto = appUserService.convertToDto(appUser);
         response.setData(userDto);
         return ResponseEntity.ok(response);
     }

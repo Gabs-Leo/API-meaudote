@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                             "/api/v1/testing", "/api/v1/testing/**"
                     ).permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v1/pixkeys/**", "/api/v1/pets/**", "/api/v1/users/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/pixkeys/**", "/api/v1/pets/**", "/api/v1/users/**").permitAll()
                     .requestMatchers("/api/v1/admin").hasAnyAuthority("ADMIN")
                     .requestMatchers("/api/v1/users/current", "/api/v1/pixkeys/**", "/api/v1/pets/**").hasAnyAuthority("ADMIN", "USER")
                     .anyRequest().authenticated()

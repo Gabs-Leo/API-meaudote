@@ -59,6 +59,10 @@ public class AdoptionAnimalService {
         return this.findByAppUser(appUserService.findByEmail(principal.getName()), pageable);
     }
 
+    public Integer findPetAmountWhereAppUserNameEquals(String name) {
+        return adoptionAnimalRepository.findPetAmountWhereAppUserNameEquals(name);
+    }
+
     public void deleteById(UUID id) {
         adoptionAnimalRepository.deleteById(id);
     }

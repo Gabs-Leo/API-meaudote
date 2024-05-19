@@ -20,5 +20,8 @@ public interface AdoptionAnimalRepository extends JpaRepository<AdoptionAnimal, 
     AdoptionAnimal save(AdoptionAnimal adoptionAnimal);
     @Query("SELECT aa FROM AdoptionAnimal aa WHERE aa.id = :id AND aa.appUser.email = :email")
     Optional<AdoptionAnimal> findByIdWhereAppUserEmailEquals(@Param("id") UUID id, @Param("email") String email);
+
+    @Query("SELECT COUNT(aa) FROM AdoptionAnimal aa WHERE aa.appUser.name = :name")
+    Integer findPetAmountWhereAppUserNameEquals(@Param("name") String name);
     void delete(AdoptionAnimal adoptionAnimal);
 }

@@ -10,6 +10,7 @@ import com.gabsleo.meaudote.enums.UniqueField;
 import com.gabsleo.meaudote.exceptions.AppUserNotLoggedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.exceptions.FieldInUseException;
+import com.gabsleo.meaudote.repositories.AdoptionAnimalRepository;
 import com.gabsleo.meaudote.repositories.AppUserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,13 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final AppRoleService appRoleService;
+    private final AdoptionAnimalRepository adoptionAnimalRepository;
     @Autowired
-    public AppUserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, AppRoleService appRoleService) {
+    public AppUserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, AppRoleService appRoleService, AdoptionAnimalRepository adoptionAnimalRepository) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.appRoleService = appRoleService;
+        this.adoptionAnimalRepository = adoptionAnimalRepository;
     }
     public AppUser save(AppUser appUser){
         return appUserRepository.save(appUser);
@@ -124,7 +127,8 @@ public class AppUserService implements UserDetailsService {
                 appUser.getProfilePicture(),
                 appUser.getBannerPicture(),
                 appUser.getState(),
-                appUser.getCity()
+                appUser.getCity(),
+                adoptionAnimalRepository.findPetAmountWhereAppUserNameEquals(appUser.getName())
         );
     }
 
