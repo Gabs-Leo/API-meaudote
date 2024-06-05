@@ -200,4 +200,24 @@ public class AppUser implements UserDetails {
         return appRoles;
     }
 
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "cpf='" + cpf + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                ", phone='" + phone + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", bannerPicture='" + bannerPicture + '\'' +
+                ", isNGO=" + isNGO +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", appRoles=" + appRoles +
+                ", pixKeys=" + pixKeys +
+                ", adoptionAnimals=" + adoptionAnimals +
+                ", donationPages=" + donationPages +
+                '}';
+    }
 }

@@ -6,6 +6,7 @@ import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.enums.Model;
 import com.gabsleo.meaudote.exceptions.AppUserNotLoggedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
+import com.gabsleo.meaudote.filters.AdoptionAnimalFilter;
 import com.gabsleo.meaudote.repositories.AdoptionAnimalRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,16 @@ public class AdoptionAnimalService {
     public Page<AdoptionAnimal> findAll(Pageable pageable){
         return adoptionAnimalRepository.findAll(pageable);
     }
+
+    public Page<AdoptionAnimal> findAllFiltered(Pageable pageable, AdoptionAnimalFilter adoptionAnimalFilter){
+        return adoptionAnimalRepository.findAll(pageable,
+                adoptionAnimalFilter.maxAge(),
+                adoptionAnimalFilter.species(),
+                adoptionAnimalFilter.city(),
+                adoptionAnimalFilter.state()
+        );
+    }
+
     public AdoptionAnimal save(AdoptionAnimal adoptionAnimal){
         return adoptionAnimalRepository.save(adoptionAnimal);
     }

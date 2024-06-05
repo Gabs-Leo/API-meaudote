@@ -42,7 +42,7 @@ public class ImageController {
             @PathVariable UUID id
     ) throws IOException {
         var response = new Response<String>();
-        storageService.save(id, "pets/"+id, file);
+        storageService.save(id, "pets", file);
         response.setData("File saved.");
         return ResponseEntity.ok().body(response);
     }

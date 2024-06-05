@@ -3,6 +3,7 @@ package com.gabsleo.meaudote.dtos;
 import jakarta.validation.constraints.NotEmpty;
 
 public record UpdateAppUserDto(
+        String name,
         @NotEmpty(message = "Phone cant be empty.")
         String phone,
         Boolean isNGO,

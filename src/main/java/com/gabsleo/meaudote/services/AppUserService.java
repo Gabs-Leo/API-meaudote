@@ -58,8 +58,11 @@ public class AppUserService implements UserDetailsService {
         this.attachRole(user, appRoleService.findByName("USER"));
         return user;
     }
-    public AppUser udpate(AppUser appUser, UpdateAppUserDto appUserDto){
+    public AppUser update(AppUser appUser, UpdateAppUserDto appUserDto){
+        String cpf = appUser.getCpf();
         BeanUtils.copyProperties(appUserDto, appUser);
+        System.out.println(appUser.toString());
+        appUser.setCpf(cpf);
         return this.save(appUser);
     }
 
