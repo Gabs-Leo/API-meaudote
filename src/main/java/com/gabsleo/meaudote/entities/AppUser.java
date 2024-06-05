@@ -142,16 +142,18 @@ public class AppUser implements UserDetails {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public AppUser setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+        return this;
     }
 
     public String getBannerPicture() {
         return bannerPicture;
     }
 
-    public void setBannerPicture(String bannerPicture) {
+    public AppUser setBannerPicture(String bannerPicture) {
         this.bannerPicture = bannerPicture;
+        return this;
     }
 
     public Boolean getNGO() {
@@ -196,5 +198,26 @@ public class AppUser implements UserDetails {
 
     public List<AppRole> getAppRoles() {
         return appRoles;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "cpf='" + cpf + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                ", phone='" + phone + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", bannerPicture='" + bannerPicture + '\'' +
+                ", isNGO=" + isNGO +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", appRoles=" + appRoles +
+                ", pixKeys=" + pixKeys +
+                ", adoptionAnimals=" + adoptionAnimals +
+                ", donationPages=" + donationPages +
+                '}';
     }
 }

@@ -1,8 +1,6 @@
 package com.gabsleo.meaudote.controllers;
 
-import com.gabsleo.meaudote.dtos.AdoptionAnimalDto;
-import com.gabsleo.meaudote.dtos.AppUserDto;
-import com.gabsleo.meaudote.dtos.PixKeyDto;
+import com.gabsleo.meaudote.dtos.*;
 import com.gabsleo.meaudote.entities.AdoptionAnimal;
 import com.gabsleo.meaudote.entities.AppUser;
 import com.gabsleo.meaudote.entities.PixKey;
@@ -44,30 +42,16 @@ public class AppUserController {
     public ResponseEntity<Response<AppUserDto>> getCurrent(Principal principal) throws AppUserNotLoggedException, NotFoundException {
         Response<AppUserDto> response = new Response<>();
         AppUser appUser = appUserService.findByEmail(principal.getName());
-        AppUserDto userDto = new AppUserDto(
-            appUser.getName(),
-            appUser.getPhone(),
-            appUser.getProfilePicture(),
-            appUser.getBannerPicture(),
-            appUser.getState(),
-            appUser.getCity()
-        );
+        AppUserDto userDto = appUserService.convertToDto(appUser);
         response.setData(userDto);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<Response<AppUserDto>> getUser(@PathParam("username") String username) throws NotFoundException {
+    public ResponseEntity<Response<AppUserDto>> getUser(@PathVariable("username") String username) throws NotFoundException {
         Response<AppUserDto> response = new Response<>();
         AppUser appUser = appUserService.findByName(username);
-        AppUserDto userDto = new AppUserDto(
-                appUser.getName(),
-                appUser.getPhone(),
-                appUser.getProfilePicture(),
-                appUser.getBannerPicture(),
-                appUser.getState(),
-                appUser.getCity()
-        );
+        AppUserDto userDto = appUserService.convertToDto(appUser);
         response.setData(userDto);
         return ResponseEntity.ok(response);
     }
@@ -109,7 +93,7 @@ public class AppUserController {
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
             @RequestParam(value = "direction", defaultValue = "DESC") String direction,
             @RequestParam(value = "size", defaultValue = "20") int objectsPerPage,
-            @PathParam("username") String username
+            @PathVariable("username") String username
     ) throws NotFoundException, AppUserNotLoggedException {
         Response<Page<AdoptionAnimalDto>> response = new Response<>();
         Pageable request = PageRequest.of(page, objectsPerPage, Sort.Direction.valueOf(direction), orderBy);
@@ -134,6 +118,15 @@ public class AppUserController {
         List<PixKey> keys = pixKeyService.findByAppUser(appUserService.findByName(username));
         List<PixKeyDto> keysDto = keys.stream().map(pixKeyService::convertToDto).toList();
         response.setData(keysDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/current")
+    public ResponseEntity<Response<AppUserDto>> updateCurrent(Principal principal, @RequestBody UpdateAppUserDto appUserDto) throws AppUserNotLoggedException, NotFoundException {
+        Response<AppUserDto> response = new Response<>();
+        AppUser appUser = appUserService.findByEmail(principal.getName());
+        AppUser result = appUserService.update(appUser, appUserDto);
+        response.setData(appUserService.convertToDto(result));
         return ResponseEntity.ok(response);
     }
 }

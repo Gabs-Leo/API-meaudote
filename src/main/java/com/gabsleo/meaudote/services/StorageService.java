@@ -1,6 +1,7 @@
 package com.gabsleo.meaudote.services;
 
 import com.gabsleo.meaudote.entities.AdoptionAnimal;
+import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -18,14 +19,16 @@ import java.util.UUID;
 public class StorageService {
     private final Storage storage;
     private final AdoptionAnimalService adoptionAnimalService;
+    private final AppUserService appUserService;
 
     @Value("${env.GCP_BUCKET_NAME}")
     private String bucket_name;
 
     @Autowired
-    public StorageService(Storage storage, AdoptionAnimalService adoptionAnimalService) {
+    public StorageService(Storage storage, AdoptionAnimalService adoptionAnimalService, AppUserService appUserService) {
         this.storage = storage;
         this.adoptionAnimalService = adoptionAnimalService;
+        this.appUserService = appUserService;
     }
 
     public void save( String path, MultipartFile mpfile ) throws IOException {
@@ -37,6 +40,16 @@ public class StorageService {
     public void save(UUID id, String path, MultipartFile file) throws IOException {
         this.save(path + "/" + id, file);
         adoptionAnimalService.save(adoptionAnimalService.findById(id).setImage(file.getOriginalFilename()));
+    }
+
+    public void saveAppUserProfilePicture(String name, String path, MultipartFile file) throws IOException, NotFoundException {
+        this.save(path, file);
+        appUserService.save(appUserService.findByName(name).setProfilePicture(file.getOriginalFilename()));
+    }
+
+    public void saveAppUserBannerPicture(String username, String path, MultipartFile file) throws IOException, NotFoundException {
+        this.save(path, file);
+        appUserService.save(appUserService.findByName(username).setBannerPicture(file.getOriginalFilename()));
     }
 
     public byte[] download(String path) throws IOException {
@@ -54,4 +67,5 @@ public class StorageService {
         AdoptionAnimal pet = adoptionAnimalService.findById(id);
         return this.download(path + "/" + id + "/" + pet.getImage());
     }
+
 }

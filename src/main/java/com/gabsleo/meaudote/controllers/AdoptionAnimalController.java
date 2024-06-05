@@ -4,8 +4,10 @@ import com.gabsleo.meaudote.dtos.AdoptionAnimalDto;
 import com.gabsleo.meaudote.dtos.AppUserDto;
 import com.gabsleo.meaudote.entities.AdoptionAnimal;
 import com.gabsleo.meaudote.entities.AppUser;
+import com.gabsleo.meaudote.enums.Species;
 import com.gabsleo.meaudote.exceptions.AppUserNotLoggedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
+import com.gabsleo.meaudote.filters.AdoptionAnimalFilter;
 import com.gabsleo.meaudote.services.AdoptionAnimalService;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.utils.Response;
@@ -20,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +39,7 @@ public class AdoptionAnimalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<AdoptionAnimalDto>> findById(@PathParam("id") UUID id) {
+    public ResponseEntity<Response<AdoptionAnimalDto>> findById(@PathVariable("id") UUID id) {
         Response<AdoptionAnimalDto> response = new Response<>();
         response.setData(
                 adoptionAnimalService.convertToDto(adoptionAnimalService.findById(id))
@@ -51,7 +54,7 @@ public class AdoptionAnimalController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Response<Page<AdoptionAnimalDto>>> findAllAdoptionAnimalDto(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
@@ -61,6 +64,26 @@ public class AdoptionAnimalController {
         Response<Page<AdoptionAnimalDto>> response = new Response<>();
         Pageable request = PageRequest.of(page, objectsPerPage, Sort.Direction.valueOf(direction), orderBy);
         Page<AdoptionAnimal> pageAdopt = adoptionAnimalService.findAll(request);
+        Page<AdoptionAnimalDto> pageAdoptDto = pageAdopt.map(adoptionAnimalService::convertToDto);
+        response.setData(pageAdoptDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Response<Page<AdoptionAnimalDto>>> findAllFiltered(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction,
+            @RequestParam(value = "size", defaultValue = "20") int objectsPerPage,
+
+            @RequestParam(value = "maxAge", defaultValue = "20") int age,
+            @RequestParam(value = "species", defaultValue = "CAT,DOG") List<Species> species,
+            @RequestParam(value = "state", defaultValue = "%") String state,
+            @RequestParam(value = "city", defaultValue = "%") String city
+    ) {
+        Response<Page<AdoptionAnimalDto>> response = new Response<>();
+        Pageable request = PageRequest.of(page, objectsPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Page<AdoptionAnimal> pageAdopt = adoptionAnimalService.findAllFiltered(request, new AdoptionAnimalFilter(age, species, state, city));
         Page<AdoptionAnimalDto> pageAdoptDto = pageAdopt.map(adoptionAnimalService::convertToDto);
         response.setData(pageAdoptDto);
         return ResponseEntity.ok(response);

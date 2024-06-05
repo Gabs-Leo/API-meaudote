@@ -34,6 +34,8 @@ public class AuthenticationService {
     public JwtTokenDto register(RegisterDto request) throws FieldInUseException, NotFoundException {
         AppUser user = new AppUser();
         BeanUtils.copyProperties(request, user);
+        user.setBannerPicture("none");
+        user.setProfilePicture("none");
         appUserService.register(user);
 
         String token = jwtService.generateToken(user);
