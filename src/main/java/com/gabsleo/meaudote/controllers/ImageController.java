@@ -1,6 +1,7 @@
 package com.gabsleo.meaudote.controllers;
 
 import com.gabsleo.meaudote.entities.AppUser;
+import com.gabsleo.meaudote.exceptions.ImageOversizedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
 import com.gabsleo.meaudote.services.AppUserService;
 import com.gabsleo.meaudote.services.StorageService;
@@ -40,7 +41,7 @@ public class ImageController {
     public ResponseEntity<Response<String>> uploadImage(
             @RequestParam("file") MultipartFile file,
             @PathVariable UUID id
-    ) throws IOException {
+    ) throws IOException, ImageOversizedException {
         var response = new Response<String>();
         storageService.save(id, "pets", file);
         response.setData("File saved.");
@@ -61,7 +62,7 @@ public class ImageController {
     public ResponseEntity<Response<String>> uploadProfileImage(
             @RequestParam("file") MultipartFile file,
             @PathVariable("name") String name
-    ) throws IOException, NotFoundException {
+    ) throws IOException, NotFoundException, ImageOversizedException {
         var response = new Response<String>();
         storageService.saveAppUserProfilePicture(name, "users/profile-picture/"+name, file);
         response.setData("File saved.");

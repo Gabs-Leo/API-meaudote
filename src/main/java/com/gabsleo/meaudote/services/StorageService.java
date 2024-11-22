@@ -1,7 +1,10 @@
 package com.gabsleo.meaudote.services;
 
 import com.gabsleo.meaudote.entities.AdoptionAnimal;
+import com.gabsleo.meaudote.enums.ImageExtension;
+import com.gabsleo.meaudote.exceptions.ImageOversizedException;
 import com.gabsleo.meaudote.exceptions.NotFoundException;
+import com.gabsleo.meaudote.exceptions.NotImageException;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -11,8 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -31,23 +38,37 @@ public class StorageService {
         this.appUserService = appUserService;
     }
 
-    public void save( String path, MultipartFile mpfile ) throws IOException {
+    public void save( String path, MultipartFile mpfile ) throws IOException, ImageOversizedException {
+
+        // Extension Validation
+        String fileExtension = Objects.requireNonNull(mpfile.getOriginalFilename()).substring(mpfile.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+        if(Arrays.stream(ImageExtension.values())
+                .noneMatch(ext -> ext.getExtension().equals(fileExtension))){
+            throw new NotImageException(fileExtension);
+        }
+
+        // Image Validation
+        BufferedImage image = ImageIO.read(mpfile.getInputStream());
+        if(image.getWidth() > 1024 || image.getHeight() > 1024){
+            throw new ImageOversizedException(image.getWidth(), image.getHeight());
+        }
+
         BlobId id = BlobId.of(bucket_name, path+ "/" + mpfile.getOriginalFilename());
         BlobInfo info = BlobInfo.newBuilder(id).build();
         storage.create(info, mpfile.getBytes());
     }
 
-    public void save(UUID id, String path, MultipartFile file) throws IOException {
+    public void save(UUID id, String path, MultipartFile file) throws IOException, ImageOversizedException {
         this.save(path + "/" + id, file);
         adoptionAnimalService.save(adoptionAnimalService.findById(id).setImage(file.getOriginalFilename()));
     }
 
-    public void saveAppUserProfilePicture(String name, String path, MultipartFile file) throws IOException, NotFoundException {
+    public void saveAppUserProfilePicture(String name, String path, MultipartFile file) throws IOException, NotFoundException, ImageOversizedException {
         this.save(path, file);
         appUserService.save(appUserService.findByName(name).setProfilePicture(file.getOriginalFilename()));
     }
 
-    public void saveAppUserBannerPicture(String username, String path, MultipartFile file) throws IOException, NotFoundException {
+    public void saveAppUserBannerPicture(String username, String path, MultipartFile file) throws IOException, NotFoundException, ImageOversizedException {
         this.save(path, file);
         appUserService.save(appUserService.findByName(username).setBannerPicture(file.getOriginalFilename()));
     }
