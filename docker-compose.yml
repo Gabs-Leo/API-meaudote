@@ -1,33 +1,10 @@
 version: '3.8'
-
 services:
-  spring-boot-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      ROOT_NAME: meaudote
-      ROOT_PASSWORD: pass
-      ROOT_CPF: 68973545035
-      ROOT_EMAIL: meaudote@gmail.com
-      ROOT_PHONE: 16990652478
-      JWT_EXPIRATION_TIME: 7
-      SECRET_KEY: xJ4ztfiZ1kZRVD0ktUGVPqCL0L/J2ZyZ3i6YUSWHQynio/kbddi+e03c+p/d3kWHeyrrkDWChdV84vRZhc1uORoekZ32j20Id9jC8hIb6CErW+be4AtMxthOKDdplvYzIoKMjW+51BKdWE3gnr9EpKsn3WH0B+gsCBL1u8ozA4RgIvDOkBCjpksEW1Fl8dqeABq068cT8nz6idgznMx5924m0Lk/FlChIZR7mrEPV35j1AnvM4CgjQULRgWMduRk/ZkDacbH0kTwFVM4iri6TJA47/cNe4RCzmI+T2PirYrro5hkv+meCC3ZPeaRbr/H37HzmQmvcepFVia/WtJ9NQ==
-      DB_HOST: postgres-db
-      DB_PORT: 5432
-      DB_NAME: postgres
-      DB_USER: postgres
-      DB_PASSWORD: pass
-    depends_on:
-      - postgres-db
-
-  postgres-db:
+  my-db:
     image: postgres:latest
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass
     ports:
-      - "5432:5432"
+      - "4321:5432"
